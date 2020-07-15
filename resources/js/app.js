@@ -10,7 +10,7 @@ import io from 'socket.io-client';
 import NProgress from 'vue-nprogress'
 
 
-const socket = io('http://localhost:3000');
+const socket = io('https://127.0.0.1:3000');
 
 Vue.use(VueSocketIOExt, socket);
 

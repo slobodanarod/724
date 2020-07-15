@@ -25,7 +25,7 @@
             this.init();
         }, mounted ()
         {
-            this.socket = io("http://localhost:3000");
+            this.socket = io("https://127.0.0.1:3000");
             this.socket.on('chat_leave', function (data) {
                 console.log("chat leave çalıştı");
                 window.axios.post("/chat/room/leave", data).then((res) => {

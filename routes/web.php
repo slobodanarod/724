@@ -3,35 +3,42 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
-Route::group(["namespace" => "Admin"], function()
-{
+Route::group(["namespace" => "Admin"], function () {
 
-Route::get('/admin/',"IndexController@index")->name("admin.index");
-Route::get('/admin/users/with/abouts',"UsersController@wAbout")->name("admin.wAbout");
-Route::get('/admin/users/with/img',"UsersController@wImg")->name("admin.wImg");
-Route::get('/admin/users/with/ban',"UsersController@wBan")->name("admin.wBan");
-Route::get('/admin/users/with/danger',"UsersController@wDanger")->name("admin.wDanger");
-Route::get('/admin/users/banned/{id}',"UsersController@banned")->name("admin.users.banned");
-Route::get('/admin/users/with/fake',"UsersController@fake")->name("admin.users.fake");
-Route::get('/admin/users/run',"UsersController@run")->name("admin.users.run");
+    Route::get('/admin/login', "IndexController@login")->name("admin.login");
+    Route::post('/admin/login', "IndexController@login_post")->name("admin.login.post");
 
-    Route::resources([
-        '/admin/users' => 'UsersController',
-        '/admin/blogs' => 'BlogsController',
-        '/admin/pages' => 'PagesController',
-        '/admin/settings' => 'SettingsController',
-        'posts' => 'PostController'
-    ]);
+    Route::group(["middleware" => "admin"],function ()
+    {
+        Route::get('/admin/logout', "IndexController@logout")->name("admin.logout");
+        Route::get('/admin/', "IndexController@index")->name("admin.index");
+        Route::get('/admin/users/with/abouts', "UsersController@wAbout")->name("admin.wAbout");
+        Route::get('/admin/users/with/img', "UsersController@wImg")->name("admin.wImg");
+        Route::get('/admin/users/with/ban', "UsersController@wBan")->name("admin.wBan");
+        Route::get('/admin/users/with/danger', "UsersController@wDanger")->name("admin.wDanger");
+        Route::get('/admin/users/banned/{id}', "UsersController@banned")->name("admin.users.banned");
+        Route::get('/admin/users/with/fake', "UsersController@fake")->name("admin.users.fake");
+        Route::get('/admin/users/run', "UsersController@run")->name("admin.users.run");
+
+        Route::resources([
+            '/admin/users' => 'UsersController',
+            '/admin/blogs' => 'BlogsController',
+            '/admin/pages' => 'PagesController',
+            '/admin/settings' => 'SettingsController',
+            'posts' => 'PostController'
+        ]);
+    });
+
 
 });
 
 Route::post("/user/init", "Front\UserController@init");
-Route::get("/user/control", function(){
+Route::get("/user/control", function () {
 
-    if(auth()->check()){
+    if (auth()->check()) {
         echo "tamam";
         echo auth()->id();
-    }else{
+    } else {
         echo "değil";
     }
 
@@ -73,18 +80,17 @@ Route::post("/get/page", "Front\IndexController@page");
 Route::get("/get/blogs", "Front\BlogsController@getAll");
 Route::post("/get/blog", "Front\BlogsController@getOne");
 
-Route::get('/clear-cache', function() {
+Route::get('/clear-cache', function () {
     Artisan::call('cache:clear');
 
     return "Cache is cleared";
 });
 
 
-Route::get('/test/mail',function()
-{
+Route::get('/test/mail', function () {
     return new \App\Mail\UserRegister();
 });
 
-Route::get('/{any}', function() {
+Route::get('/{any}', function () {
     return view('frontend.layout');
 })->where("any", ".*");

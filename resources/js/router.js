@@ -19,7 +19,13 @@ import Messages from "./pages/Messages";
 import Password from "./pages/Password";
 import contact from "./pages/contact";
 import about from "./pages/about";
+import cookie from "./pages/cookie";
+import Last from "./pages/Last";
+import privacy from "./pages/privacy";
+import security from "./pages/security";
 import NProgress from 'nprogress';
+import Blogs from './pages/blogs/index'
+import Blog from './pages/blogs/detail'
 
 Vue.use(VueRouter);
 const router = new VueRouter({
@@ -33,24 +39,34 @@ const router = new VueRouter({
     }, {
         path: '/login', component: login, name: 'login',
 
-    }, {path: '/chat-rooms', component: chatrooms, name: 'chatrooms'}, {
-        path: '/room/:url', component: room, name: 'room',
-    }, {path: '/profile/:url', component: profile, name: 'profile'}, {
+    }, {path: '/chat-rooms', component: chatrooms, name: 'chatrooms'},
+        { path: '/room/:url', component: room, name: 'room',},
+        {path: '/profile/:url', component: profile, name: 'profile'}, {
         path: '/settings', component: settings, name: 'settings'
-    }, {path: '/change/password', component: Password, name: 'password'}, {
-        path: '/onlines', component: onlines, name: 'onlines',
-
-    }, {path: '/actions/viewer/in', component: viewerin, name: 'viewerin'}, {
+    }, {path: '/change/password', component: Password, name: 'password'},
+        { path: '/onlines', component: onlines, name: 'onlines',},
+        { path: '/last-users', component: Last, name: 'last_users',},
+        {path: '/actions/viewer/in', component: viewerin, name: 'viewerin'}, {
         path: '/actions/viewer/out', component: viewerout, name: 'viewerout'
     },
 
         {path: '/actions/smiles/in', component: smilesin, name: 'smilesin'},
         {path: '/about', component: about, name: 'about'},
+        {path: '/privacy', component: privacy, name: 'privacy'},
+        {path: '/security', component: security, name: 'security'},
+        {path: '/use-of-cookie', component: cookie, name: 'cookie'},
         { path: '/actions/smiles/out', component: smilesout, name: 'smilesout'  },
         { path: '/contact', component: contact, name: 'contact'  },
 
 
-        {path: '/messages', component: Messages, name: 'messages'},], mode: 'history'
+        {path: '/messages', component: Messages, name: 'messages'},
+        {path: '/blog', component: Blogs, name: 'blogs'},
+        {path: '/b/:url', component: Blog, name: 'blog'},
+
+    ],
+
+
+    mode: 'history'
 });
 
 router.beforeEach((to, from, next) => {

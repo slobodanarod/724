@@ -21,11 +21,10 @@
                                                     <h2>İt's free!</h2>
                                                     <p>İngilizce.</p>
                                                 </div>
-
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6">
+                                    <div class="col-lg-6 col-xs-12">
                                         <div class="lr-right">
                                             <h4 v-if="lang === 'tr'">Şimdi Ücretsiz Üye Ol</h4>
                                             <h4 v-else>Now Be Member</h4>
@@ -80,11 +79,9 @@
                                                         </div>
                                                         <div class="col">
                                                             <div class="form-group">
-                                                                <select class="form-control" v-model="user.city">
-                                                                    <option value="0" selected disabled>Şehir Seçin
-                                                                    </option>
-                                                                    <option value="1">İzmir</option>
-                                                                    <option value="2">İstanbul</option>
+                                                                <select class="form-control" v-model="user.city" >
+                                                                    <option value="0" selected disabled>Ülke Seç </option>
+                                                                    <option v-for="c in countries" :value="c.id_country">{{ c.country_name }}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -120,7 +117,6 @@
                                                                        type="text" placeholder="Username"
                                                                        required>
                                                             </div>
-
                                                         </div>
                                                         <div class="col">
                                                             <div class="form-group">
@@ -158,11 +154,9 @@
                                                         </div>
                                                         <div class="col">
                                                             <div class="form-group">
-                                                                <select class="form-control" v-model="user.city">
-                                                                    <option value="0" selected disabled>Select City
-                                                                    </option>
-                                                                    <option value="1">İzmir</option>
-                                                                    <option value="2">İstanbul</option>
+                                                                <select class="form-control" v-model="user.city" >
+                                                                    <option value="0" selected disabled>Ülke Seç </option>
+                                                                    <option v-for="c in countries" :value="c.id_country">{{ c.country_name }}</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -177,7 +171,6 @@
                                                                        required>
                                                             </div>
                                                         </div>
-
                                                     </div>
                                                     <div class="rgstr-dt-txt">
                                                         Üye olarak <a href="#">Kuralları</a>, <a href="#">Üyelik
@@ -196,7 +189,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </main>
@@ -211,10 +203,16 @@
 		{
 			return {
 				user: {
-					city: 0, gender: 1
-				}, alerts: []
+					city: 190, gender: 1
+				}, alerts: [],countries : []
 			}
-		}, methods: {
+		},
+        mounted () {
+		  window.axios.get("/countries").then((res) => {
+		      this.countries = res.data;
+          });
+        },
+        methods: {
 			onSubmit ()
 			{
 				this.alerts = [];

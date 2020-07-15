@@ -7,8 +7,10 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
     state: {
-        activeUser: {}, _token: ""
-    }, getters: {
+        activeUser: {}, _token: "", blogs: [], blog: {}
+    },
+
+    getters: {
         activeUser: state => {
             return state.activeUser;
         }, _token: state => {
@@ -16,12 +18,24 @@ export const store = new Vuex.Store({
         }, isAuthenticated (state)
         {
             return state._token !== ""
+        }, getBLogs (state)
+        {
+            return state.blogs;
+        }, getBLog (state)
+        {
+            return state.blog;
         }
     }, mutations: {
         activeUser: (state, n) => {
             state.activeUser = n;
         }, _token: (state, n) => {
             state._token = n;
+        }, setBlogs (state, payload)
+        {
+            state.blogs = payload;
+        }, setBlog (state, payload)
+        {
+            state.blog = payload;
         }
     }, actions: {
         logout ({commit, dispatch})
@@ -43,9 +57,9 @@ export const store = new Vuex.Store({
             {
                 commit("_token", token);
                 var data = {
-                    token : token
+                    token: token
                 };
-                axios.post('/user/init',data).then((res) => {
+                axios.post('/user/init', data).then((res) => {
                     commit("activeUser", res.data.user);
                 });
             }
@@ -61,8 +75,27 @@ export const store = new Vuex.Store({
             commit("_token", 2312131);
             localStorage.setItem("token", 2312131);
 
-        }, _token: (context, n) => {
-            context.commit('_token', n);
-        }
-    }
-});
+        }, _token:
+(context, n) => {
+    context.commit('_token', n);
+}, Blogs({commit, dispatch, state}, n)
+{
+
+    return axios.get("/get/blogs").then(res => {
+        commit('setBlogs', res.data.blogs);
+    })
+
+},
+            Blog({commit, dispatch, state}, n)
+            {
+                var data = {
+                    sef_link: n.sef_link
+                };
+                axios.post("/get/blog",data).then(res => {
+                    commit('setBlog', res.data.blog);
+                });
+            }
+
+}
+})
+;

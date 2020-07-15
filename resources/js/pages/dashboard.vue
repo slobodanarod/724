@@ -13,7 +13,7 @@
                                                 <img :src=" '/images/users/' + user.image " :alt="user.name">
                                             </div>
                                         </div>
-                                        <div class="user-main-details">
+                                        <div class="user-main-details" style="padding: 70px 0 10px 0;">
                                             <h4>{{ user.name }}</h4>
                                         </div>
 
@@ -77,6 +77,35 @@
                                     </div>
 
                                     <div class="activity-posts" v-if="p.type === 2 ">
+                                        <div class="activity-group1">
+                                            <div class="main-user-dts1">
+                                                <router-link :to="{ name : 'profile' , params: { url: p.slug } }"><img
+                                                    :src="'/images/users/'+p.image" :alt="p.name"></router-link>
+                                                <div class="user-text3">
+                                                    <h4>
+                                                        <router-link
+                                                            :to="{ name : 'profile' , params: { url: p.slug } }"
+                                                            style="color:black;">{{ p.name }}
+                                                        </router-link>
+                                                    </h4>
+                                                    <p>
+                                                        <router-link
+                                                            :to="{ name : 'room' , params: { url: p.room_slug } }"
+                                                            style="color:black; font-weight:bold;">
+                                                            {{ p.room_name}}
+                                                        </router-link>
+                                                        {{ p.post_content }} <span style="float:right"><timeago
+                                                        :datetime="p.olusturma_tarihi"></timeago></span></p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="activity-descp">
+                                            <p></p>
+                                        </div>
+
+                                    </div>
+                                    <div class="activity-posts" v-if="p.type === 3 ">
                                         <div class="activity-group1">
                                             <div class="main-user-dts1">
                                                 <router-link :to="{ name : 'profile' , params: { url: p.slug } }"><img

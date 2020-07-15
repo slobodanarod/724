@@ -19,13 +19,16 @@ class UserController extends Controller
     public function init (Request $request)
     {
 
-
         $user = User::where("token", $request->token)->first();
-        if($user)
+
+        if ($user)
         {
-            return response()->json(["user" => $user,"status" => true], 200);
-        }else{
-            return response()->json(["user" => $user,"status" => false], 200);
+            Auth::loginUsingId($user->id, true);
+            return response()->json(["user" => $user, "status" => true], 200);
+        }
+        else
+        {
+            return response()->json(["user" => $user, "status" => false], 200);
         }
 
     }
@@ -53,39 +56,30 @@ class UserController extends Controller
                 $image = "woman-" . $rand . ".png";
             }
 
-            function getToken($length){
-                $token = "";
+            function getToken ($length)
+            {
+                $token        = "";
                 $codeAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                $codeAlphabet.= "abcdefghijklmnopqrstuvwxyz";
-                $codeAlphabet.= "0123456789";
-                $max = strlen($codeAlphabet);
+                $codeAlphabet .= "abcdefghijklmnopqrstuvwxyz";
+                $codeAlphabet .= "0123456789";
+                $max          = strlen($codeAlphabet);
 
-                for ($i=0; $i < $length; $i++) {
-                    $token .= $codeAlphabet[random_int(0, $max-1)];
+                for ($i = 0; $i < $length; $i++)
+                {
+                    $token .= $codeAlphabet[ random_int(0, $max - 1) ];
                 }
 
                 return $token;
             }
 
-            $slug = Str::slug($request->name);
-            $token = "fdsfdsfdsfdsfs";
-            $user = User::create([
-                "name" => $request->name,
-                "token" => getToken(30),
-                "email" => $request->email,
-                'gender' => $request->gender,
-                'image' => $image,
-                'borndate' => $request->borndate,
-                'city' => $request->city,
-                "slug" => $slug,
-                "password" => Hash::make($request->password),
-                "status" => 1]);
-
+            $ip = $_SERVER["REMOTE_ADDR"];
+            $slug  = Str::slug($request->name);
+            $user  = User::create([ "ip" => $ip, "name" => $request->name, "token" => getToken(30), "email" => $request->email, 'gender' => $request->gender, 'image' => $image, 'borndate' => $request->borndate, 'city' => $request->city, "slug" => $slug, "password" => Hash::make($request->password), "status" => 1]);
             Auth::attempt(['name' => $request->name, 'password' => $request->password]);
-
+            DB::table("posts")->insert(["type" => 3, "type_id" => 0, "user_id" => $user->id, "post_content" => "Siteye üye oldu.", "created_at" => Carbon::now()]);
             Mail::to($request->email)->send(new UserRegister($user));
-
             return response()->json($user, 200);
+
         }
 
     }
@@ -96,6 +90,7 @@ class UserController extends Controller
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password]))
         {
             $user = User::where("email", $request->email)->first();
+
             return response()->json($user, 200);
         }
         else
@@ -109,7 +104,8 @@ class UserController extends Controller
         auth()->logout();
         request()->session()->flush();
         request()->session()->regenerate();
-        return response()->json("çıkış yapıldış",200);
+
+        return response()->json("çıkış yapıldış", 200);
     }
 
     public function update (Request $request)

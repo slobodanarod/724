@@ -75,7 +75,7 @@
                 {
                          window.axios.post("/user/login", this.user).then((res) => {
                              this.$store.dispatch("login",res.data.token);
-                             document.location.href = "/dashboard";
+                             document.location.href = "/home";
                              return true;
                     }).catch(err => {
                         this.alerts = err.response.data;

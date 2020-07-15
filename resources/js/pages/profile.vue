@@ -33,7 +33,8 @@
                                             <button @click="smile()" v-if="smiles" class="msg-btn1 smile"><i
                                                 class="far fa-smile"></i> Zaten gülümsedin
                                             </button>
-                                            <button @click="smile()" v-else class="msg-btn1 nsmile"><i class="far fa-smile"></i>
+                                            <button @click="smile()" v-else class="msg-btn1 nsmile"><i
+                                                class="far fa-smile"></i>
                                                 Gülümse
                                             </button>
                                         </div>
@@ -61,24 +62,7 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-3 col-md-5">
-                            <div class="user-data full-width">
-                                <div class="categories-left-heading">
-                                    <h3>Bu Profili Gezenler</h3>
-                                </div>
-
-                                <div class="sugguest-user" v-for="v in viewers">
-                                    <div class="sugguest-user-dt">
-                                        <router-link :to="{ name : 'profile' , params: { url: v.slug } }"><img
-                                            :src=" '/images/users/' + v.image" :alt="v.name"></router-link>
-                                        <router-link :to="{ name : 'profile' , params: { url: v.slug } }"><h4>{{ v.name
-                                            }}</h4></router-link>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-7">
+                        <div class="col-lg-12 col-md-12">
                             <div class="main-posts">
                                 <div v-for="p in posts">
 
@@ -96,7 +80,6 @@
                                             <p>{{ p.post_content }}</p>
                                         </div>
                                     </div>
-
                                     <div class="activity-posts" v-if="p.type === 2 ">
                                         <div class="activity-group1">
                                             <div class="main-user-dts1">
@@ -126,42 +109,28 @@
                                         </div>
 
                                     </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="news-data-dash full-width">
-                                <div class="categories-left-heading">
-                                    <h3>Hakkında</h3>
-                                </div>
-                                <div class="categories-items">
-                                    <div class="news-item">
-                                        <div class="news-item-heading">
-                                            <i class="fas fa-music"></i>
-                                            <h6>Music</h6>
-                                        </div>
-                                        <div class="news-description">
-                                            Suspendisse cursus egestas luctus. <a href="#">Http://website.com/news</a>
-                                        </div>
-                                    </div>
-                                    <div class="news-item">
-                                        <div class="news-item-heading">
-                                            <i class="fas fa-pen-nib"></i>
-                                            <h6>Art</h6>
-                                        </div>
-                                        <div class="news-description">
-                                            Suspendisse cursus egestas luctus. <a href="#">Http://website.com/news</a>
-                                        </div>
-                                    </div>
-                                    <div class="news-item">
-                                        <div class="news-item-heading">
-                                            <i class="far fa-futbol"></i>
-                                            <h6>Sports</h6>
-                                        </div>
-                                        <div class="news-description">
-                                            Suspendisse cursus egestas luctus. <a href="#">Http://website.com/news</a>
+                                    <div class="activity-posts" v-if="p.type === 3 ">
+                                        <div class="activity-group1">
+                                            <div class="main-user-dts1">
+                                                <router-link :to="{ name : 'profile' , params: { url: p.slug } }"><img
+                                                    :src="'/images/users/'+p.image" :alt="p.name"></router-link>
+                                                <div class="user-text3">
+                                                    <h4>
+                                                        <router-link
+                                                            :to="{ name : 'profile' , params: { url: p.slug } }"
+                                                            style="color:black;">{{ p.name }}
+                                                        </router-link>
+                                                    </h4>
+                                                    <p>
+                                                        <router-link
+                                                            :to="{ name : 'room' , params: { url: p.room_slug } }"
+                                                            style="color:black; font-weight:bold;">
+                                                            {{ p.room_name}}
+                                                        </router-link>
+                                                        {{ p.post_content }} <span style="float:right"><timeago
+                                                        :datetime="p.olusturma_tarihi"></timeago></span></p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -178,7 +147,7 @@
     import SendMessageModal from "../components/SendMessageModal";
 
     export default {
-        name: "profile", props : ["user"],components: {SendMessageModal}, data ()
+        name: "profile", props: ["user"], components: {SendMessageModal}, data ()
         {
             return {
                 profile: null, onlinestatus: null, posts: [], viewers: [], profileData: {}, smiles: null
@@ -195,6 +164,7 @@
         }, mounted ()
         {
             this.init();
+            console.log(this.$route.params.url);
         }, methods: {
             init ()
             {

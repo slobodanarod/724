@@ -95,9 +95,9 @@
                                                     <div class="col-lg-6 col-md-12">
                                                         <div class="form-group">
                                                             <label>Şehir *</label>
-                                                            <select class="form-control" v-model="user.city">
-                                                                <option value="1">İzmir</option>
-                                                                <option value="2">İstanbul</option>
+                                                            <select class="form-control" v-model="user.city" >
+                                                                <option value="0" selected disabled>Ülke Seç </option>
+                                                                <option v-for="c in countries" :value="c.id_country">{{ c.country_name }}</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -132,13 +132,19 @@
 
 <script>
 	export default {
-		name: "settings", props : ["user"],
+		name: "settings", props : ["user","lang"],
         data()
         {
         	return {
                 alert : null,
-                image : null
+                image : null,
+                countries : []
             }
+        },
+        mounted () {
+            window.axios.get("/countries").then((res) => {
+                this.countries = res.data;
+            });
         },
         methods:
         {

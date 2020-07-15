@@ -66,6 +66,7 @@
                     window.axios.post('/user/init', data).then((res) => {
                         if (res.data.status)
                         {
+                            console.log(res.data);
                             this.user = res.data.user;
                             this.$store.dispatch("initAuth");
                             console.log("app init");

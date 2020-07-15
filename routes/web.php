@@ -3,16 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Artisan;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 Route::group(["namespace" => "Admin"], function()
 {
 
@@ -27,18 +17,32 @@ Route::get('/admin/users/run',"UsersController@run")->name("admin.users.run");
 
     Route::resources([
         '/admin/users' => 'UsersController',
+        '/admin/blogs' => 'BlogsController',
+        '/admin/pages' => 'PagesController',
+        '/admin/settings' => 'SettingsController',
         'posts' => 'PostController'
     ]);
 
 });
 
 Route::post("/user/init", "Front\UserController@init");
+Route::get("/user/control", function(){
+
+    if(auth()->check()){
+        echo "tamam";
+        echo auth()->id();
+    }else{
+        echo "değil";
+    }
+
+});
 Route::post("/user/register", "Front\UserController@register");
 Route::post("/user/login", "Front\UserController@login");
 Route::post("/user/settings/update", "Front\UserController@update");
 Route::post("/user/imageUpload", "Front\UserController@imageUpload");
 Route::post("/ch/password", "Front\UserController@chpassword");
 Route::get("/user/logout", "Front\UserController@logout");
+Route::get("/countries", "Front\IndexController@countries");
 
 Route::post("/chat/rooms/get", "Front\RoomsController@roomsApi");
 Route::post("/chat/room/init", "Front\RoomsController@init");
@@ -56,16 +60,18 @@ Route::post("/message/send", "Front\MessagesController@sendinChat");
 Route::post("/get/conv", "Front\MessagesController@getConversation");
 
 Route::post("/log", "Front\UserController@log");
-
 Route::post("/actions/viewer/in", "Front\ActionsController@viewerin");
 Route::post("/actions/viewer/out", "Front\ActionsController@viewerout");
-
 Route::post("/actions/smiles/in", "Front\ActionsController@smilesin");
 Route::post("/actions/smiles/out", "Front\ActionsController@smilesout");
-
 Route::post("/post/send", "Front\UserController@post");
+Route::post("/get/last-users", "Front\IndexController@last_users");
 Route::post("/post/get", "Front\UserController@posts");
 Route::post("/contact/message", "Front\IndexController@contact");
+Route::post("/get/page", "Front\IndexController@page");
+
+Route::get("/get/blogs", "Front\BlogsController@getAll");
+Route::post("/get/blog", "Front\BlogsController@getOne");
 
 Route::get('/clear-cache', function() {
     Artisan::call('cache:clear');

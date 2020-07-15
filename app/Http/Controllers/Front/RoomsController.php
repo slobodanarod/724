@@ -25,21 +25,26 @@ class RoomsController extends Controller
 
     public function init (Request $request)
     {
-        $room = DB::table("chatrooms")->where("room_slug", $request->slug)->first();
-        if ($room)
+        if (auth()->id())
         {
-            $messages = DB::table("users")->join("chat_messages", "chat_messages.user_id", "=", "users.id")->where("chat_messages.room_id", $room->id)->get();
-            $users = DB::table("chat_users")->leftJoin("users", "users.id", "=", "chat_users.user_id")->where("chat_users.room_id", "=", $room->id)->distinct("chat_users.user_id")->get();
-            //log
-            DB::table("posts")->insert(["type_id" => $room->id, "user_id" => auth()->id(), "type" => 2, "post_content" => " odasına giriş yaptı.", "created_at" => Carbon::now()]);
-            $firstValue = DB::table("chat_messages")->where("room_id", $room->id)->get();
-            $count      = count($firstValue);
+            $room = DB::table("chatrooms")->where("room_slug", $request->slug)->first();
+            if ($room)
+            {
+                $messages = DB::table("users")->join("chat_messages", "chat_messages.user_id", "=", "users.id")->where("chat_messages.room_id", $room->id)->get();
+                $users    = DB::table("chat_users")->leftJoin("users", "users.id", "=", "chat_users.user_id")->where("chat_users.room_id", "=", $room->id)->distinct("chat_users.user_id")->get();
+                //log
+                DB::table("posts")->insert(["type_id" => $room->id, "user_id" => auth()->id(), "type" => 2, "post_content" => " odasına giriş yaptı.", "created_at" => Carbon::now()]);
+                $firstValue = DB::table("chat_messages")->where("room_id", $room->id)->get();
+                $count      = count($firstValue);
 
-            return response()->json(['room' => $room, 'messages' => $messages, 'users' => $users, "count" => $count], 200);
-        }
-        else
-        {
-            return response()->json("Artık böyle bir oda yok.", 401);
+                return response()->json(['room' => $room, 'messages' => $messages, 'users' => $users, "count" => $count], 200);
+            }
+            else
+            {
+                return response()->json("Artık böyle bir oda yok.", 401);
+            }
+        }else{
+            return response()->json("Hatalı Giriş. Lütfen tekrar deneyin.", 402);
         }
     }
 

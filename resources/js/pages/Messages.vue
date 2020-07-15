@@ -3,7 +3,8 @@
         <div class="dash-tab-links">
             <div class="container">
                 <div class="dash-discussions mb-20 bpm-50">
-                    <div id="content-wrapper">
+                    <div class="text-center" v-if="convs.length < 1">Henüz bir mesaj bulunmamaktadır.</div>
+                    <div v-else id="content-wrapper">
                         <div class="container-fluid pb-0">
                             <div class="row">
                                 <div class="col-lg-4 msg col-sm-12">
@@ -52,11 +53,10 @@
                                                  class="mCS-light mCSB_vertical mCSB_inside"
                                                  tabindex="0" style="max-height: none;">
                                                 <div class="mCSB_container"
-                                                     style="position: relative; top: 0px; left: 0px;" dir="ltr">
+                                                     style="position: relative;top: 90px;left: 0px;" dir="ltr">
                                                     <div class="main-message-box">
                                                         <div class="messg-usr-img">
-                                                            <a href="#"><img src="images/messages/1_chat.jpg" alt=""
-                                                                             class="mCS_img_loaded"></a>
+                                                            <a href="#"><img src="images/messages/1_chat.jpg" alt=""  class="mCS_img_loaded"></a>
                                                         </div>
                                                     </div>
                                                     <div v-for="m in messages">
